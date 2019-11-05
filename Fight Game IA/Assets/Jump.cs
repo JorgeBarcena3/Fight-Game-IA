@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public class Jump : MonoBehaviour
 {
@@ -13,13 +14,23 @@ public class Jump : MonoBehaviour
     public float height;
     //Tiempo que tarda en realizar la acción
     public float timeAction;
-    //Variable auxiliar para realizar la interpolacion
+    //Tiempo que se mantiene en el aire 
+    public float timeFloating;
+    //Variable auxiliar para controlar el tiempo de salto
     private float auxTime=0;
+    //variable auxiliar para realizar la interpolacion
+    private float auxLerp = 0;
     // Start is called before the first frame update
-    private bool jumping;
+    public bool jumping;
+    public bool inAir;
+    public bool falling;
+    public bool highestPoint;
     void Start()
     {
         jumping = false;
+        inAir = false;
+        falling = false;
+        highestPoint = false;
         myTransform = GetComponent<Transform>();
         initialPosition = myTransform.position;
         endPosition = new Vector2(myTransform.position.x, myTransform.position.y + height);
@@ -27,26 +38,38 @@ public class Jump : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {  
+        if (jumping && auxTime <= timeAction)
+        {
+            auxLerp = auxTime/timeAction;
+            myTransform.position = Vector2.Lerp(initialPosition, endPosition, auxLerp);
+            auxTime += Time.deltaTime;
+        }
+        if (myTransform.position.y >= endPosition.y-0.1)
+        {
+            jumping = false; highestPoint = true;
+        }
+        else{ highestPoint = false; }
+
+        if (falling && auxTime >= 0)
+        {
+            auxLerp = auxTime / timeAction;
+            myTransform.position = Vector2.Lerp(initialPosition, endPosition, auxLerp);
+            auxTime -= Time.deltaTime;
+        }
+        if (myTransform.position.y <= initialPosition.y+0.1 && falling) { inAir = false; falling = false; }
+
+
+
     }
     public void JumpOwner()
     {
         jumping = true;
-        while (auxTime <= timeAction)
-        {
-            myTransform.position = Vector2.Lerp(initialPosition, endPosition, auxTime);
-            auxTime += Time.deltaTime; 
-        }
+        inAir = true;
     }
     public void FallOwner()
     {
-        while (auxTime >= 0)
-        {
-            myTransform.position = Vector2.Lerp(initialPosition, endPosition, auxTime);
-            auxTime -= Time.deltaTime;
-        }
-        jumping = false;
+        falling = true;
     }
     public bool GetJumping()
     {
