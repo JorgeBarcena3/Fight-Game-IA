@@ -168,6 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 131198531664000605}
   - component: {fileID: 131198531664000604}
+  - component: {fileID: 2130860514137139990}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -186,8 +187,8 @@ Transform:
   m_LocalPosition: {x: 0.79321194, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 131198532997478195}
   - {fileID: 131198532319888041}
+  - {fileID: 131198532997478195}
   - {fileID: 131198532220820107}
   - {fileID: 131198533369841753}
   - {fileID: 131198532652444115}
@@ -213,6 +214,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2130860514137139990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131198531664000579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c54aebc53ed1d34397f4908b29926d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &131198531927635063
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +414,7 @@ Transform:
   - {fileID: 131198532513693451}
   - {fileID: 131198531633230080}
   m_Father: {fileID: 131198531664000605}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &131198532335189478
 GameObject:
@@ -671,7 +684,7 @@ Transform:
   - {fileID: 131198532335189479}
   - {fileID: 131198531927635056}
   m_Father: {fileID: 131198531664000605}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &131198533369841752
 GameObject:
