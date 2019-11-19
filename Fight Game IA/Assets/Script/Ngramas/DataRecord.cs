@@ -18,7 +18,7 @@ class DataRecord
     /// <summary>
     /// Contador de acciones
     /// </summary>
-    public Dictionary<char, int> counts { get; set; }
+    public Dictionary<string, int> counts { get; set; }
 
     /// <summary>
     /// Constructor por defecto
@@ -26,6 +26,6 @@ class DataRecord
     public DataRecord()
     {
         this.total = 0;
-        this.counts = new Dictionary<char, int>();
+        this.counts = new Dictionary<string, int>();
     }
 };

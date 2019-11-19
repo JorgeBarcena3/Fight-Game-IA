@@ -25,11 +25,12 @@ public class GamePredictor
     /// Registra los acciones
     /// </summary>
     /// <param name="actions">Acciones a almacenar</param>
-    public void RegisterActions(string actions)
+    public void RegisterActions(List<string> actions)
     {
+     
+        string key = ListToStringAction(actions);
 
-        string key = actions.Substring(0, actions.Length - 1);
-        char value = actions[actions.Length - 1];
+        string value = actions[actions.Count - 1];
 
         if (!data.ContainsKey(key))
         {
@@ -47,20 +48,37 @@ public class GamePredictor
 
     }
 
+    private static string ListToStringAction(List<string> actions)
+    {
+        string actionString = "";
+
+        foreach (string action in actions)
+        {
+            actionString += action;
+        }
+
+        return actionString;
+    }
+
     /// <summary>
     /// Devuelve la accion mas probable que va a hacer el jugador
     /// </summary>
     /// <param name="actions"></param>
     /// <returns></returns>
-    public char GetMostLikely(string actions)
+    public string GetMostLikely(List<string> actions)
     {
-        char bestAction = ' ';
+        string bestAction = " ";
+
         int highestValue = 0;
+
         DataRecord record;
-        if (data.ContainsKey(actions))
+
+        string actionString = ListToStringAction(actions);
+
+        if (data.ContainsKey(actionString))
         {
-            record = data[actions];
-            foreach (char action in record.counts.Keys)
+            record = data[actionString];
+            foreach (string action in record.counts.Keys)
             {
                 if (record.counts[action] > highestValue)
                 {
@@ -80,26 +98,6 @@ public class GamePredictor
 
         return bestAction;
     }
-
-    /// <summary>
-    /// Formatea los datos como un string
-    /// </summary>
-    /// <returns></returns>
-    public string AString()
-    {
-        string respuesta = "";
-        foreach (string key in data.Keys)
-        {
-            respuesta += "\n" + key + ": ";
-            DataRecord record = data[key];
-            foreach (char action in record.counts.Keys)
-            {
-                respuesta += "  " + action + "->" + record.counts[action];
-            }
-        }
-        return respuesta;
-
-    }
-
-
+    
+  
 }

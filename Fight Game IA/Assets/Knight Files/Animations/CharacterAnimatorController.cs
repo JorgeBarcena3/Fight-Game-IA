@@ -49,7 +49,6 @@ public class CharacterAnimatorController : MonoBehaviour
         auxTimeJump = 0;
         auxTime = 0;
 
-
     }
 
     // Update is called once per frame
@@ -134,5 +133,50 @@ public class CharacterAnimatorController : MonoBehaviour
         }
 
         return current;
+    }
+
+    /// <summary>
+    /// Devuelve todas las posibles acciones del jugador
+    /// </summary>
+    /// <returns></returns>
+    public List<string> getPossibleActions()
+    {
+
+        List<string> actions = new List<string>();
+
+        if (atack1 != KeyCode.None)
+        {
+            char action = atack1.ToString().ToCharArray()[0];
+            actions.Add("U" + action);
+            actions.Add("F" + action);
+            actions.Add("C" + action);
+
+        } 
+        if(atack2 != KeyCode.None)
+        {
+            char action = atack2.ToString().ToCharArray()[0];
+            actions.Add("U" + action);
+            actions.Add("F" + action);
+            actions.Add("C" + action);
+
+        }
+        if (atack3 != KeyCode.None)
+        {
+            char action = atack3.ToString().ToCharArray()[0];
+            actions.Add("U" + action);
+            actions.Add("F" + action);
+            actions.Add("C" + action);
+
+        }
+        if (atack4 != KeyCode.None)
+        {
+            char action = atack4.ToString().ToCharArray()[0];
+            actions.Add("U" + action);
+            actions.Add("F" + action);
+            actions.Add("C" + action);
+
+        }
+
+        return actions;
     }
 }
