@@ -299,7 +299,7 @@ PrefabInstance:
     - target: {fileID: 2130860514137139990, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea,
         type: 3}
       propertyPath: timeAtack
-      value: 0.2
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 2130860514137139990, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea,
         type: 3}
@@ -319,7 +319,7 @@ PrefabInstance:
     - target: {fileID: 2130860514137139990, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea,
         type: 3}
       propertyPath: crouch
-      value: 308
+      value: 99
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea, type: 3}

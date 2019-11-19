@@ -100,10 +100,12 @@ public class CharacterAnimatorController : MonoBehaviour
                 if (Input.GetKeyDown(atack1)) //Ataque 1
                 {
                     animController.SetInteger("state", 1);
+                    atacking = true;
                 }
                 else if (Input.GetKeyDown(atack2)) //Ataque 2
                 {
                     animController.SetInteger("state", 2);
+                    atacking = true;
                 }
                 else //Volvemos al estado inicial
                 {
