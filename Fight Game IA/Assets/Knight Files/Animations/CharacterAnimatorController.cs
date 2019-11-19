@@ -100,6 +100,7 @@ public class CharacterAnimatorController : MonoBehaviour
                 {
                     animController.SetInteger("state", 1);
                     atacking = true;
+                    registerAction();
                 }
                 else if (Input.GetKeyDown(atack2)) //Ataque 2
                 {
@@ -118,6 +119,14 @@ public class CharacterAnimatorController : MonoBehaviour
             }
         }
 
+    }
+
+    /// <summary>
+    /// Registra la accion en la IA
+    /// </summary>
+    private void registerAction()
+    {
+        throw new NotImplementedException();
     }
 
     private AnimState checkAnimState()
