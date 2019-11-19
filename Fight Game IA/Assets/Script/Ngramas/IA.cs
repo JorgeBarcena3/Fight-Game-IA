@@ -1,10 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class IA : MonoBehaviour
 {
+    /// <summary>
+    /// Tiempo de prediccion
+    /// </summary>
+    public float tiempoDePrediccion;
+
+    /// <summary>
+    /// Contador actual
+    /// </summary>
+    private float currentTime;
+
     /// <summary>
     /// Ventana que utilizara para atacar al contrario
     /// </summary>
@@ -13,12 +25,12 @@ public class IA : MonoBehaviour
     /// <summary>
     /// Total de acciones que puede hacer un jugador
     /// </summary>
-    public string totalActions = "";
+    public List<string> totalActions = new List<string>();
 
     /// <summary>
     /// Posible acciones que puede realizar la IA
     /// </summary>
-    private string possibleActions = ""; 
+    private List<string> possibleActions = new List<string>(); 
 
     /// <summary>
     /// Objeto que predice que hay
@@ -30,11 +42,6 @@ public class IA : MonoBehaviour
     /// </summary>
     public static IA instance;
 
-    /// <summary>
-    /// Porcentaje de aciertos y fallos
-    /// </summary>
-    public float acierto = 0, total = 0;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -43,38 +50,51 @@ public class IA : MonoBehaviour
     }
 
     /// <summary>
+    /// Start del script
+    /// </summary>
+    private void Start()
+    {
+        List<string> player = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterAnimatorController>().getPossibleActions();
+
+        foreach (string action in player)
+        {
+            AddAction(action);
+        }
+
+    }
+
+    /// <summary>
     /// Añade una accion a las posibles acciones
     /// </summary>
     /// <param name="action"></param>
-    public void AddAction(char action)
+    public void AddAction(string action)
     {
-        possibleActions += action;
+        possibleActions.Add(action);
     }
 
     /// <summary>
     /// Obtiene una accion aleatoria
     /// </summary>
     /// <returns></returns>
-    private char RandomGuess()
+    private string RandomGuess()
     {
-        return possibleActions[Random.Range(0, possibleActions.Length)];
+        return possibleActions[UnityEngine.Random.Range(0, possibleActions.Count)];
     }
 
     /// <summary>
     /// Intenta adivinar la respuesta correcta
     /// </summary>
-    /// <param name="correctAnswer"></param>
-    public void Guess(char correctAnswer)
+    public string Guess()
     {
-        string lastActions = "";
-        string frase = "";
-        total++;
-        char guess;
-        if (totalActions.Length >= windowSize)
+        List<string> lastActions = new List<string>();
+       
+        string guess;
+
+        if (totalActions.Count >= windowSize)
         {
-            lastActions = totalActions.Substring(totalActions.Length - windowSize, windowSize);
+            lastActions = totalActions.Skip(totalActions.Count - windowSize).Take(windowSize).ToList();// .Substring(totalActions.Length - windowSize, windowSize);
             guess = predictor.GetMostLikely(lastActions);
-            if (guess == ' ')
+            if (guess == " ")
             {
                 guess = RandomGuess();
             }
@@ -84,22 +104,39 @@ public class IA : MonoBehaviour
             guess = RandomGuess();
         }
 
-        if (guess == correctAnswer)
+
+        //lastActions = totalActions.Skip(totalActions.Count - windowSize - 1).Take(windowSize + 1).ToList();
+        //predictor.RegisterActions(lastActions);
+
+        Debug.Log(guess);
+        return guess;
+
+    }
+
+    /// <summary>
+    /// Funcion de update de la IA
+    /// </summary>
+    private void Update()
+    {
+
+        if(currentTime > tiempoDePrediccion)
         {
-            acierto++;
-            frase += "ACIERTO";
+            currentTime = tiempoDePrediccion;
+            realizarAccion(Guess());
         }
         else
         {
-            frase += "FALLO";
+            currentTime += Time.deltaTime;
         }
-        frase += " Tasa de aciertos: " + acierto / total + " \n";
-
-
-      
-        lastActions = totalActions.Substring(totalActions.Length - windowSize - 1, windowSize + 1);
-        predictor.RegisterActions(lastActions);
-
+        
     }
-    
+
+    /// <summary>
+    /// Realizamos la animacion
+    /// </summary>
+    /// <param name="v"></param>
+    private void realizarAccion(string v)
+    {
+        throw new NotImplementedException();
+    }
 }
