@@ -40,6 +40,7 @@ public class CharacterAnimatorController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         //Controlador de la animacion
         animController = GetComponent<Animator>();
 

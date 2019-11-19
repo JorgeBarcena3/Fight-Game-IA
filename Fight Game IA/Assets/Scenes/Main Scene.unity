@@ -194,6 +194,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1503535804 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 131198531664000579, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1539406603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1503535808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503535804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04724fcb13c5c4a40b331b17901a8dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  height: 1
+  timeAction: 0.5
+  timeFloating: 0.7
+  jumping: 0
+  inAir: 0
+  falling: 0
+  highestPoint: 0
 --- !u!1001 &1539406603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -326,6 +351,31 @@ PrefabInstance:
         type: 3}
       propertyPath: tiempoDePrediccion
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130860514137139990, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea,
+        type: 3}
+      propertyPath: atack1
+      value: 113
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130860514137139990, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea,
+        type: 3}
+      propertyPath: atack2
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130860514137139990, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea,
+        type: 3}
+      propertyPath: jump
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130860514137139990, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea,
+        type: 3}
+      propertyPath: crouch
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130860514137139990, guid: 59d8ef981a0fe8f49b7d94ff90ce98ea,
+        type: 3}
+      propertyPath: timeAtack
+      value: 0.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed6ef1ef9900e264193d0f9f24ae6b23, type: 3}
