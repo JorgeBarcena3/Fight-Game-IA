@@ -42,8 +42,11 @@ public class LifeController : MonoBehaviour
    /// </summary>
     public void CheckHealt()
     {
-        string player_action = player_controller.currentActionString;
-        string machine_action = machine_controller.totalActions[machine_controller.totalActions.Count - 1];
+        string machine_action = machine_controller.Guess();
+        string player_action = player_controller.checkAction();
+
+        Debug.Log("AI: " + machine_action + " -- " + player_action + " :PL");
+
         if (player_action != machine_action)
         {
             switch (roles(player_action, machine_action))

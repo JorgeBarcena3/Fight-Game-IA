@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Auxiliar del pulso de acciones
     /// </summary>
-    private float aux_pulsoDeAcciones;
+    public float aux_pulsoDeAcciones { get; private set; }
 
     /// <summary>
     /// Controlador de la IA
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
         IaController.Go();
         playerController.Go();
 
-        Debug.Log("Starting...");
+
     }
 
     /// <summary>

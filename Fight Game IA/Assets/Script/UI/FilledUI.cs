@@ -38,11 +38,11 @@ public class FilledUI : MonoBehaviour
     {
         if (tipo == TypePlayer.IA)
         {
-           image.fillAmount = LifeController.instance.GetMachineHealt();
+           image.fillAmount = LifeController.instance.GetMachineHealt() / 100f;
         }
         else
         {
-            image.fillAmount = LifeController.instance.GetPlayerHealt();
+            image.fillAmount = LifeController.instance.GetPlayerHealt() / 100f;
         }
     }
 }

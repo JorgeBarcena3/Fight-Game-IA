@@ -13,11 +13,6 @@ public class IA : MonoBehaviour
     public float tiempoDePrediccion;
 
     /// <summary>
-    /// Contador actual
-    /// </summary>
-    private float currentTime;
-
-    /// <summary>
     /// Ventana que utilizara para atacar al contrario
     /// </summary>
     public byte windowSize = 2;
@@ -48,18 +43,25 @@ public class IA : MonoBehaviour
     public CharacterAnimatorController PlayerController;
 
     /// <summary>
-    /// Determina si un objeto esta o no instanciado
+    /// Controlador de las animaciones
     /// </summary>
-    private bool Instanciado = false;
+    private Animator animController;
+
+    /// <summary>
+    /// Jump component
+    /// </summary>
+    private Jump jumpComponent;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         instance = this;
         predictor = new GamePredictor();
+        animController = gameObject.GetComponent<Animator>();
+        jumpComponent = gameObject.GetComponent<Jump>();
     }
 
-  
+
     /// <summary>
     /// Añade una accion a las posibles acciones
     /// </summary>
@@ -89,7 +91,7 @@ public class IA : MonoBehaviour
 
         if (totalActions.Count >= windowSize)
         {
-            lastActions = totalActions.Skip(totalActions.Count - windowSize).Take(windowSize).ToList();// .Substring(totalActions.Length - windowSize, windowSize);
+            lastActions = totalActions.Skip(totalActions.Count - windowSize).Take(windowSize).ToList(); // .Substring(totalActions.Length - windowSize, windowSize);
             guess = predictor.GetMostLikely(lastActions);
             if (guess == " ")
             {
@@ -101,7 +103,7 @@ public class IA : MonoBehaviour
             guess = RandomGuess();
         }
 
-        Debug.Log(guess);
+        realizarAccion(guess);
         return guess;
 
     }
@@ -119,9 +121,6 @@ public class IA : MonoBehaviour
             AddAction(action);
         }
 
-        currentTime = 0;
-
-        Instanciado = true;
     }
 
     /// <summary>
@@ -139,34 +138,65 @@ public class IA : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Funcion de update de la IA
-    /// </summary>
-    private void Update()
-    {
-
-        if (Instanciado)
-        {
-
-            if (currentTime > tiempoDePrediccion)
-            {
-                currentTime = 0;
-                realizarAccion(Guess());
-            }
-            else
-            {
-                currentTime += Time.deltaTime;
-            }
-        }
-
-    }
-
+    
     /// <summary>
     /// Realizamos la animacion
     /// </summary>
     /// <param name="v"></param>
     private void realizarAccion(string v)
     {
-        //throw new NotImplementedException();
+        MakeAnim(v);
     }
+
+
+    /// <summary>
+    /// Hace la animacion
+    /// </summary>
+    private void MakeAnim(string currentActionString)
+    {
+        char posicion = currentActionString[0];
+        char ataque = currentActionString[1];
+
+        switch (posicion)
+        {
+            case 'F':
+                animController.SetInteger("_animState", 0);
+                setAnimAttack(ataque);
+
+                break;
+
+            case 'U':
+                animController.SetInteger("_animState", 0);
+                jumpComponent.JumpOwner();
+                setAnimAttack(ataque);
+
+                break;
+
+            case 'C':
+                animController.SetInteger("_animState", 2);
+                break;
+        }
+
+    }
+
+    private void setAnimAttack(char ataque)
+    {
+        switch (ataque)
+        {
+            case 'Q':
+                animController.SetInteger("state", 1);
+                break;
+
+            case 'W':
+                animController.SetInteger("state", 2);
+                break;
+
+            default:
+                animController.SetInteger("state", 0);
+                break;
+
+        }
+    }
+
 }
+
