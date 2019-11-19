@@ -5,23 +5,46 @@ using System.Threading;
 
 public class Jump : MonoBehaviour
 {
+
+    /// <summary>
+    /// Si esta o no saltando
+    /// </summary>
+    private bool jump;
+
+    /// <summary>
+    /// Transform del componente
+    /// </summary>
     private Transform myTransform;
+
     /// <summary>
     /// Posicion normal de pelea
     /// </summary>
     private Vector3 initialPosition;
+
     /// <summary>
     /// Posicion mas alta del salto
     /// </summary>
     private Vector3 endPosition;
+
     /// <summary>
     /// Altura maxima
     /// </summary>
     public float height;
+
     /// <summary>
     /// Tiempo que tarda en realizar la acción
     /// </summary>
     public float timeAction;
+
+    /// <summary>
+    /// Para el tiempo de la interpolacion
+    /// </summary>
+    private float t = 0;
+
+    /// <summary>
+    /// Si ha llegado a lo alto del salto
+    /// </summary>
+    private bool haSaltado = false;
 
 
     /// <summary>
@@ -35,9 +58,6 @@ public class Jump : MonoBehaviour
         jump = false;
     }
 
-    float t;
-
-    bool haSaltado = false;
     // Update is called once per frame
     void Update()
     {
@@ -61,7 +81,6 @@ public class Jump : MonoBehaviour
         }
     }
 
-    public bool jump;
     /// <summary>
     /// Inicia la acción de saltar
     /// </summary>

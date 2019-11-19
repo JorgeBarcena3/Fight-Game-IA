@@ -45,11 +45,6 @@ public class CharacterAnimatorController : MonoBehaviour
     public KeyCode crouch;
 
     /// <summary>
-    /// Tiempo de duracion de ataque
-    /// </summary>
-    public float timeAtack;
-
-    /// <summary>
     /// Componente de salto
     /// </summary>
     private Jump jumpComponent;

@@ -7,11 +7,7 @@ using UnityEngine.UI;
 
 public class IA : MonoBehaviour
 {
-    /// <summary>
-    /// Tiempo de prediccion
-    /// </summary>
-    public float tiempoDePrediccion;
-
+   
     /// <summary>
     /// Ventana que utilizara para atacar al contrario
     /// </summary>
