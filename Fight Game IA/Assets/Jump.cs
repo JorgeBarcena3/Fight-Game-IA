@@ -20,7 +20,7 @@ public class Jump : MonoBehaviour
     private float auxTime=0;
     //variable auxiliar para realizar la interpolacion
     private float auxLerp = 0;
-    // Start is called before the first frame update
+    
     public bool jumping;
     public bool inAir;
     public bool falling;
@@ -39,13 +39,13 @@ public class Jump : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  
-        if (jumping && auxTime <= timeAction)
+        if (jumping && !falling && auxTime <= timeAction)
         {
             auxLerp = auxTime/timeAction;
             myTransform.position = Vector2.Lerp(initialPosition, endPosition, auxLerp);
             auxTime += Time.deltaTime;
         }
-        if (myTransform.position.y >= endPosition.y-0.1)
+        if (myTransform.position.y >= endPosition.y - 0.1f)
         {
             jumping = false; highestPoint = true;
         }
@@ -57,7 +57,7 @@ public class Jump : MonoBehaviour
             myTransform.position = Vector2.Lerp(initialPosition, endPosition, auxLerp);
             auxTime -= Time.deltaTime;
         }
-        if (myTransform.position.y <= initialPosition.y+0.1 && falling) { inAir = false; falling = false; }
+        if (myTransform.position.y <= initialPosition.y + 0.1f && falling) { inAir = false; falling = false; }
 
 
 
