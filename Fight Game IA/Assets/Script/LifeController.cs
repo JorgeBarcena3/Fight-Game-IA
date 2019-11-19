@@ -86,12 +86,20 @@ public class LifeController : MonoBehaviour
          * U     - C      -> No hay colision
          * F     - F      -> Pude haber colision
          * F     - C      -> no hay colision
+         * !N    - N      -> hay colision
          */
         //Conque uno de los dos se agachen nadie recibe daño
         if (player[0] == 'C' || machine[0] == 'C') { return 0; }
         //En el caso de que esten en el mismo lugar, no agachados recibiran los 2 daño
         //porque hacen ataques distintos, sinó no estariamos en esta funcion
-        else if (player[0] == machine[0]) { return 3; }
+        else if (player[0] == machine[0])
+        {
+            if (player[1] != 'N' && machine[1] != 'N') { return 3; }
+            else if (player[1] == 'N') { return 2; }
+            else if (machine[1] == 'N') { return 1; }
+            else { return 3; }
+           
+        }
         else
         {
             if (player == "UW" && machine != "FW") { return 1; }
