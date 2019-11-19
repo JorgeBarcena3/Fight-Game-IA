@@ -150,6 +150,30 @@ public class CharacterAnimatorController : MonoBehaviour
         IA.instance.addtotalActions(position);
     }
 
+    private string GetAction(KeyCode attack)
+    {
+        string position = "";
+
+        if (myJumper.highestPoint)
+        {
+            position = "U" + attack.ToString().ToCharArray()[0];
+        }
+        else
+        {
+            if (_animState == AnimState.Floor)
+            {
+                position = "F" + attack.ToString().ToCharArray()[0]; ;
+            }
+            else
+            {
+                position = "C" + attack.ToString().ToCharArray()[0]; ;
+            }
+
+        }
+        return position;
+        
+    }
+
     private AnimState checkAnimState()
     {
 
