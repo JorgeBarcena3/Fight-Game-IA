@@ -9,15 +9,31 @@ public class LifeController : MonoBehaviour
     public GameObject machine;
     private CharacterAnimatorController player_controller;
     private IA machine_controller;
+    private int player_healt;
+    private int machine_healt;
     void Start()
     {
-        InvokeRepeating("CheckHeald", 0, 0.8f);
+        player_healt = 100;
+        machine_healt = 100;
+        
     }
 
     // Update is called once per frame
    
     private void CheckHealt()
     {
-        if (player_controller) { }
+        if (1 != 2)
+        {
+            if (true)
+            {
+                player_healt -= 10;
+            }
+            else
+            {
+                machine_healt -= 10;
+            }
+            
+
+        }
     }
 }

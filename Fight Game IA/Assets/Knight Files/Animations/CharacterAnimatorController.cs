@@ -193,7 +193,6 @@ public class CharacterAnimatorController : MonoBehaviour
         currentActionString = action;
         IA.instance.addtotalActions(action);
     }
-
     
 
     private AnimState checkAnimState()
