@@ -75,9 +75,99 @@ public class CharacterAnimatorController : MonoBehaviour
     public string currentActionString { get; private set; }
 
     /// <summary>
+    /// Determina si el componente esta instanciado o no
+    /// </summary>
+    private bool instanciado = false;
+
+    /// <summary>
     /// Funcion constructora
     /// </summary>
     void Start()
+    {
+
+
+    }
+
+    /// <summary>
+    /// Funcion de update
+    /// </summary>
+    void Update()
+    {
+        if (instanciado)
+        {
+            if (myJumper.highestPoint)
+            {
+                if (auxTimeJump <= myJumper.timeFloating)
+                {
+                    auxTimeJump += Time.deltaTime;
+                }
+                else
+                {
+                    myJumper.FallOwner();
+                    auxTimeJump = 0;
+                }
+
+            }
+            if (atacking)
+            {
+                if (auxTime <= timeAtack)
+                    auxTime += Time.deltaTime;
+            }
+            else
+            {
+                auxTime = 0;
+            }
+            if (auxTime >= timeAtack)
+                atacking = false;
+
+
+
+
+            _animState = checkAnimState();
+            animController.SetInteger("_animState", (int)_animState);
+
+            //Acciones de movimiento vertical
+            if (Input.GetKeyDown(jump)) { myJumper.JumpOwner(); }
+            else if (Input.GetKeyDown(crouch)) {/*TODO*/ }
+            else { }
+
+
+            if (!atacking && (myJumper.highestPoint || !myJumper.inAir))
+            {
+                if (_animState == AnimState.Floor)
+                {
+                    bool estadoInicial = true;
+
+                    foreach (KeyCode key in attacks)
+                    {
+                        if (Input.GetKeyDown(key))
+                        {
+                            animController.SetInteger("state", attacks.IndexOf(key) + 1);
+                            atacking = true;
+                            registerAction(key);
+                            estadoInicial = false;
+                        }
+
+
+                    }
+
+                    if (estadoInicial) //Volvemos al estado inicial
+                    {
+                        animController.SetInteger("state", 0);
+                    }
+                }
+                else if (_animState == AnimState.Duck)
+                {
+                    registerAction(KeyCode.None);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Start del objeto
+    /// </summary>
+    public void Go()
     {
 
         //Controlador de la animacion
@@ -89,81 +179,7 @@ public class CharacterAnimatorController : MonoBehaviour
         auxTimeJump = 0;
         auxTime = 0;
 
-    }
-
-    /// <summary>
-    /// Funcion de update
-    /// </summary>
-    void Update()
-    {
-
-        if (myJumper.highestPoint)
-        {
-            if (auxTimeJump <= myJumper.timeFloating)
-            {
-                auxTimeJump += Time.deltaTime;
-            }
-            else
-            {
-                myJumper.FallOwner();
-                auxTimeJump = 0;
-            }
-
-        }
-        if (atacking)
-        {
-            if (auxTime <= timeAtack)
-                auxTime += Time.deltaTime;
-        }
-        else
-        {
-            auxTime = 0;
-        }
-        if (auxTime >= timeAtack)
-            atacking = false;
-
-
-
-
-        _animState = checkAnimState();
-        animController.SetInteger("_animState", (int)_animState);
-
-        //Acciones de movimiento vertical
-        if (Input.GetKeyDown(jump)) { myJumper.JumpOwner(); }
-        else if (Input.GetKeyDown(crouch)) {/*TODO*/ }
-        else { }
-
-
-        if (!atacking && (myJumper.highestPoint || !myJumper.inAir))
-        {
-            if (_animState == AnimState.Floor)
-            {
-                bool estadoInicial = true;
-
-                foreach (KeyCode key in attacks)
-                {
-                    if (Input.GetKeyDown(key))
-                    {
-                        animController.SetInteger("state", attacks.IndexOf(key) + 1);
-                        atacking = true;
-                        registerAction(key);
-                        estadoInicial = false;
-                    }
-
-
-                }
-
-                if (estadoInicial) //Volvemos al estado inicial
-                {
-                    animController.SetInteger("state", 0);
-                }
-            }
-            else if (_animState == AnimState.Duck)
-            {
-                registerAction(KeyCode.None);
-            }
-        }
-
+        instanciado = true;
     }
 
     /// <summary>
@@ -193,7 +209,7 @@ public class CharacterAnimatorController : MonoBehaviour
         currentActionString = action;
         IA.instance.addtotalActions(action);
     }
-    
+
 
     private AnimState checkAnimState()
     {

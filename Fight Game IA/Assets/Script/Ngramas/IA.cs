@@ -30,7 +30,7 @@ public class IA : MonoBehaviour
     /// <summary>
     /// Posible acciones que puede realizar la IA
     /// </summary>
-    private List<string> possibleActions = new List<string>(); 
+    private List<string> possibleActions = new List<string>();
 
     /// <summary>
     /// Objeto que predice que hay
@@ -47,6 +47,11 @@ public class IA : MonoBehaviour
     /// </summary>
     public CharacterAnimatorController PlayerController;
 
+    /// <summary>
+    /// Determina si un objeto esta o no instanciado
+    /// </summary>
+    private bool Instanciado = false;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -54,22 +59,7 @@ public class IA : MonoBehaviour
         predictor = new GamePredictor();
     }
 
-    /// <summary>
-    /// Start del script
-    /// </summary>
-    private void Start()
-    {
-        List<string> player = PlayerController.getPossibleActions();
-
-        foreach (string action in player)
-        {
-            AddAction(action);
-        }
-
-        currentTime = 0;
-
-    }
-
+  
     /// <summary>
     /// Añade una accion a las posibles acciones
     /// </summary>
@@ -94,7 +84,7 @@ public class IA : MonoBehaviour
     public string Guess()
     {
         List<string> lastActions = new List<string>();
-       
+
         string guess;
 
         if (totalActions.Count >= windowSize)
@@ -109,11 +99,29 @@ public class IA : MonoBehaviour
         else
         {
             guess = RandomGuess();
-        }       
+        }
 
         Debug.Log(guess);
         return guess;
 
+    }
+
+    /// <summary>
+    /// Funcion de Start
+    /// </summary>
+    public void Go()
+    {
+
+        List<string> player = PlayerController.getPossibleActions();
+
+        foreach (string action in player)
+        {
+            AddAction(action);
+        }
+
+        currentTime = 0;
+
+        Instanciado = true;
     }
 
     /// <summary>
@@ -124,7 +132,7 @@ public class IA : MonoBehaviour
 
         totalActions.Add(action);
 
-        if(totalActions.Count >= windowSize)
+        if (totalActions.Count >= windowSize)
         {
             List<string> lastActions = totalActions.Skip(totalActions.Count - windowSize).Take(windowSize).ToList();
             predictor.RegisterActions(lastActions);
@@ -137,16 +145,20 @@ public class IA : MonoBehaviour
     private void Update()
     {
 
-        if(currentTime > tiempoDePrediccion)
+        if (Instanciado)
         {
-            currentTime = 0;
-            realizarAccion(Guess());
+
+            if (currentTime > tiempoDePrediccion)
+            {
+                currentTime = 0;
+                realizarAccion(Guess());
+            }
+            else
+            {
+                currentTime += Time.deltaTime;
+            }
         }
-        else
-        {
-            currentTime += Time.deltaTime;
-        }
-        
+
     }
 
     /// <summary>

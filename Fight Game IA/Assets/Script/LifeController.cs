@@ -7,19 +7,12 @@ public class LifeController : MonoBehaviour
    /// <summary>
    /// Referencia del jugador
    /// </summary>
-    public GameObject player;
+    public CharacterAnimatorController player_controller;
     /// <summary>
     /// Referencia de la IA
     /// </summary>
-    public GameObject machine;
-    /// <summary>
-    /// Acceso al script que controla al jugador
-    /// </summary>
-    private CharacterAnimatorController player_controller;
-    /// <summary>
-    /// Acceso al script que controla a la IA
-    /// </summary>
-    private IA machine_controller;
+    public IA machine_controller;
+
     /// <summary>
     /// Indicador de vida del jugador
     /// </summary>
@@ -28,8 +21,16 @@ public class LifeController : MonoBehaviour
     /// Indicador de vida de la IA
     /// </summary>
     private int machine_healt;
+
+    /// <summary>
+    /// Instancia a si mismo
+    /// </summary>
+    public static LifeController instance;
+
     void Start()
     {
+
+        instance = this;
         player_healt = 100;
         machine_healt = 100;
         
@@ -39,10 +40,10 @@ public class LifeController : MonoBehaviour
    /// <summary>
    /// Comprueba si alguien ha recibido daño
    /// </summary>
-    private void CheckHealt()
+    public void CheckHealt()
     {
         string player_action = player_controller.currentActionString;
-        string machine_action = machine_controller.totalActions[machine_controller.totalActions.Count];
+        string machine_action = machine_controller.totalActions[machine_controller.totalActions.Count - 1];
         if (player_action != machine_action)
         {
             switch (roles(player_action, machine_action))
