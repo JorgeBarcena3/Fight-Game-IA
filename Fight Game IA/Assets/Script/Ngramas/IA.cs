@@ -42,6 +42,11 @@ public class IA : MonoBehaviour
     /// </summary>
     public static IA instance;
 
+    /// <summary>
+    /// Controlador del jugador
+    /// </summary>
+    public CharacterAnimatorController PlayerController;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -54,7 +59,7 @@ public class IA : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        List<string> player = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterAnimatorController>().getPossibleActions();
+        List<string> player = PlayerController.getPossibleActions();
 
         foreach (string action in player)
         {
@@ -134,7 +139,7 @@ public class IA : MonoBehaviour
 
         if(currentTime > tiempoDePrediccion)
         {
-            currentTime = tiempoDePrediccion;
+            currentTime = 0;
             realizarAccion(Guess());
         }
         else
