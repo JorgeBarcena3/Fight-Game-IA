@@ -35,7 +35,7 @@ public class IA : MonoBehaviour
     /// <summary>
     /// Objeto que predice que hay
     /// </summary>
-    private GamePredictor predictor;
+    public GamePredictor predictor { get; private set; }
 
     /// <summary>
     /// Instancia de la IA
@@ -60,6 +60,8 @@ public class IA : MonoBehaviour
         {
             AddAction(action);
         }
+
+        currentTime = 0;
 
     }
 
@@ -102,15 +104,26 @@ public class IA : MonoBehaviour
         else
         {
             guess = RandomGuess();
-        }
-
-
-        //lastActions = totalActions.Skip(totalActions.Count - windowSize - 1).Take(windowSize + 1).ToList();
-        //predictor.RegisterActions(lastActions);
+        }       
 
         Debug.Log(guess);
         return guess;
 
+    }
+
+    /// <summary>
+    /// Añade una accion a total actions
+    /// </summary>
+    public void addtotalActions(string action)
+    {
+
+        totalActions.Add(action);
+
+        if(totalActions.Count >= windowSize)
+        {
+            List<string> lastActions = totalActions.Skip(totalActions.Count - windowSize).Take(windowSize).ToList();
+            predictor.RegisterActions(lastActions);
+        }
     }
 
     /// <summary>

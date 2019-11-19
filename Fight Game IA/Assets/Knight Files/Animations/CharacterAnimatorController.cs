@@ -100,12 +100,14 @@ public class CharacterAnimatorController : MonoBehaviour
                 {
                     animController.SetInteger("state", 1);
                     atacking = true;
-                    registerAction();
+                    registerAction(atack1);
                 }
                 else if (Input.GetKeyDown(atack2)) //Ataque 2
                 {
                     animController.SetInteger("state", 2);
                     atacking = true;
+                    registerAction(atack2);
+
                 }
                 else //Volvemos al estado inicial
                 {
@@ -114,8 +116,7 @@ public class CharacterAnimatorController : MonoBehaviour
             }
             else if (_animState == AnimState.Duck)
             {
-
-
+                registerAction(KeyCode.None);
             }
         }
 
@@ -124,9 +125,28 @@ public class CharacterAnimatorController : MonoBehaviour
     /// <summary>
     /// Registra la accion en la IA
     /// </summary>
-    private void registerAction()
+    private void registerAction(KeyCode attack)
     {
-        throw new NotImplementedException();
+        string position = "";
+
+        if (myJumper.highestPoint)
+        { 
+            position = "U" + attack.ToString().ToCharArray()[0];
+        }
+        else
+        {
+            if (_animState == AnimState.Floor)
+            {
+                position = "F" + attack.ToString().ToCharArray()[0]; ;
+            }
+            else
+            {
+                position = "C" + attack.ToString().ToCharArray()[0]; ;
+            }
+
+        }
+
+        IA.instance.addtotalActions(position);
     }
 
     private AnimState checkAnimState()
