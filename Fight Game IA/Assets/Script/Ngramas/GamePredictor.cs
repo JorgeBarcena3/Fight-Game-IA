@@ -48,6 +48,11 @@ public class GamePredictor
 
     }
 
+    /// <summary>
+    /// Genera una string de las lista de acciones
+    /// </summary>
+    /// <param name="actions">Lista de acciones</param>
+    /// <returns></returns>
     private static string ListToStringAction(List<string> actions)
     {
         string actionString = "";

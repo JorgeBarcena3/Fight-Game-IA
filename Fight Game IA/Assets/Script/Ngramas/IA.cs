@@ -150,6 +150,6 @@ public class IA : MonoBehaviour
     /// <param name="v"></param>
     private void realizarAccion(string v)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 }

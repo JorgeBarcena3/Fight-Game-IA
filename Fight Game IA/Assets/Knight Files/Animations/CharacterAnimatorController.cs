@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// Estado de la animacio
+/// </summary>
 public enum AnimState
 {
     Floor = 0,
@@ -12,6 +14,9 @@ public enum AnimState
 
 }
 
+/// <summary>
+/// Control del personaje
+/// </summary>
 public class CharacterAnimatorController : MonoBehaviour
 {
     /// <summary>
@@ -24,23 +29,57 @@ public class CharacterAnimatorController : MonoBehaviour
     /// </summary>
     private AnimState _animState;
 
+    /// <summary>
+    /// Lista de ataques
+    /// </summary>
+    public List<KeyCode> attacks;
 
-    public KeyCode atack1;
-    public KeyCode atack2;
-    public KeyCode atack3;
-    public KeyCode atack4;
+    /// <summary>
+    /// Tecla de salto
+    /// </summary>
     public KeyCode jump;
+
+    /// <summary>
+    /// Tecla de agacharse
+    /// </summary>
     public KeyCode crouch;
+
+    /// <summary>
+    /// Tiempo de duracion de ataque
+    /// </summary>
     public float timeAtack;
+
+    /// <summary>
+    /// Contador
+    /// </summary>
     private float auxTime;
+
+    /// <summary>
+    /// Componente de salto
+    /// </summary>
     private Jump myJumper;
+
+    /// <summary>
+    /// Determina si estoy atacando o no
+    /// </summary>
     private bool atacking;
+
+    /// <summary>
+    /// Contador para el salto
+    /// </summary>
     private float auxTimeJump;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Accion actual
+    /// </summary>
+    public string currentActionString { get; private set; }
+
+    /// <summary>
+    /// Funcion constructora
+    /// </summary>
     void Start()
     {
-        
+
         //Controlador de la animacion
         animController = GetComponent<Animator>();
 
@@ -52,7 +91,9 @@ public class CharacterAnimatorController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Funcion de update
+    /// </summary>
     void Update()
     {
 
@@ -97,20 +138,22 @@ public class CharacterAnimatorController : MonoBehaviour
         {
             if (_animState == AnimState.Floor)
             {
-                if (Input.GetKeyDown(atack1)) //Ataque 1
+                bool estadoInicial = true;
+
+                foreach (KeyCode key in attacks)
                 {
-                    animController.SetInteger("state", 1);
-                    atacking = true;
-                    registerAction(atack1);
-                }
-                else if (Input.GetKeyDown(atack2)) //Ataque 2
-                {
-                    animController.SetInteger("state", 2);
-                    atacking = true;
-                    registerAction(atack2);
+                    if (Input.GetKeyDown(key))
+                    {
+                        animController.SetInteger("state", attacks.IndexOf(key) + 1);
+                        atacking = true;
+                        registerAction(key);
+                        estadoInicial = false;
+                    }
+
 
                 }
-                else //Volvemos al estado inicial
+
+                if (estadoInicial) //Volvemos al estado inicial
                 {
                     animController.SetInteger("state", 0);
                 }
@@ -128,27 +171,30 @@ public class CharacterAnimatorController : MonoBehaviour
     /// </summary>
     private void registerAction(KeyCode attack)
     {
-        string position = "";
+        string action = "";
 
         if (myJumper.highestPoint)
-        { 
-            position = "U" + attack.ToString().ToCharArray()[0];
+        {
+            action = "U" + attack.ToString().ToCharArray()[0];
         }
         else
         {
             if (_animState == AnimState.Floor)
             {
-                position = "F" + attack.ToString().ToCharArray()[0]; ;
+                action = "F" + attack.ToString().ToCharArray()[0]; ;
             }
             else
             {
-                position = "C" + attack.ToString().ToCharArray()[0]; ;
+                action = "C" + attack.ToString().ToCharArray()[0]; ;
             }
 
         }
 
-        IA.instance.addtotalActions(position);
+        currentActionString = action;
+        IA.instance.addtotalActions(action);
     }
+
+    
 
     private AnimState checkAnimState()
     {
@@ -176,33 +222,10 @@ public class CharacterAnimatorController : MonoBehaviour
 
         List<string> actions = new List<string>();
 
-        if (atack1 != KeyCode.None)
+        foreach (KeyCode key in attacks)
         {
-            char action = atack1.ToString().ToCharArray()[0];
-            actions.Add("U" + action);
-            actions.Add("F" + action);
-            actions.Add("C" + action);
 
-        } 
-        if(atack2 != KeyCode.None)
-        {
-            char action = atack2.ToString().ToCharArray()[0];
-            actions.Add("U" + action);
-            actions.Add("F" + action);
-            actions.Add("C" + action);
-
-        }
-        if (atack3 != KeyCode.None)
-        {
-            char action = atack3.ToString().ToCharArray()[0];
-            actions.Add("U" + action);
-            actions.Add("F" + action);
-            actions.Add("C" + action);
-
-        }
-        if (atack4 != KeyCode.None)
-        {
-            char action = atack4.ToString().ToCharArray()[0];
+            char action = key.ToString().ToCharArray()[0];
             actions.Add("U" + action);
             actions.Add("F" + action);
             actions.Add("C" + action);
