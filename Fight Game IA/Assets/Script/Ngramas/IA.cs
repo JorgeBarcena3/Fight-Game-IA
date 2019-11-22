@@ -55,6 +55,11 @@ public class IA : MonoBehaviour
         predictor = new GamePredictor();
         animController = gameObject.GetComponent<Animator>();
         jumpComponent = gameObject.GetComponent<Jump>();
+
+        //corregimos la duracion de las animaciones de ataque enfuncion del ritmo del juego
+        float duration_animations = 1 / GameManager.instance.pulsoDeAcciones;
+        animController.SetFloat("duration_attack1", duration_animations);
+        animController.SetFloat("duration_attack2", duration_animations);
     }
 
 
