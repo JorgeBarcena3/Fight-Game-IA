@@ -55,10 +55,25 @@ public class IA : MonoBehaviour
     /// Jump component
     /// </summary>
     private Jump jumpComponent;
+    /// <summary>
+    /// Accion que va a realizar el contrincante
+    /// </summary>
+    private string guess;
+    /// <summary>
+    /// Porcentaje de aciertos de la IA
+    /// </summary>
+    public int correctPredictions;
+    /// <summary>
+    /// Cantidad de predicciones que ha hecho la ia
+    /// </summary>
+    public int interactions;
+   
 
     // Start is called before the first frame update
     void Start()
     {
+        interactions = 0;
+        correctPredictions = 0;
         instance = this;
         predictor = new GamePredictor();
         animController = gameObject.GetComponent<Animator>();
@@ -94,19 +109,13 @@ public class IA : MonoBehaviour
     /// </summary>
     public string Guess()
     {
-        string guess;
-
-        if (random)
-        {
-            guess = RandomGuess();
-            realizarAccion(guess);
-            return guess;
-        }
+        string anticipationAction;
+       
 
         List<string> lastActions = new List<string>();
 
 
-        if (totalActions.Count >= windowSize)
+        if (totalActions.Count >= windowSize && !random)
         {
             lastActions = totalActions.Skip(totalActions.Count - windowSize).Take(windowSize).ToList(); // .Substring(totalActions.Length - windowSize, windowSize);
             guess = predictor.GetMostLikely(lastActions);
@@ -119,10 +128,20 @@ public class IA : MonoBehaviour
         {
             guess = RandomGuess();
         }
+        //Teniendo la prediccion del ataque que va ha hacer el contrincante, escoge una opcion mejor
+        if ((int)System.Enum.Parse(typeof(Rules), guess) < 4)
+            anticipationAction = ((Rules)UnityEngine.Random.Range((int)System.Enum.Parse(typeof(Rules), guess), 4)).ToString();
+        else
+            anticipationAction = Rules.UQ.ToString();
+      
+        realizarAccion(anticipationAction);
+        return anticipationAction;
 
-        realizarAccion(guess);
+    }
+
+    public string prediction()
+    {
         return guess;
-
     }
 
     /// <summary>

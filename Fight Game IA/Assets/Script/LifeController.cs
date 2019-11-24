@@ -88,17 +88,25 @@ public class LifeController : MonoBehaviour
     /// </summary>
     public void CheckHealt()
     {
-
+        
         string machine_action = machine_controller.Guess();
         string player_action = player_controller.checkAction();
+        string prediction_ia = machine_controller.prediction();
 
         player_points = (Rules)System.Enum.Parse(typeof(Rules), player_action);
         ia_points = (Rules)System.Enum.Parse(typeof(Rules), machine_action);
 
-        Debug.Log("AI: " + machine_action + " -- " + player_action + " :PL");
+        
         //Se comprueba cual de los dos ataque es mas fuerte y si alguien ha hecho 4 y el otro 1 que gane el 1 para cerrar el circulo de acciones
         if (player_points > ia_points) { if (player_points == Rules.UQ && ia_points == Rules.FW) { currentPlayerHealth -= danioAccion; } else { currentIAHealth -= danioAccion; } }
         else if (player_points < ia_points) { if (player_points == Rules.FW && ia_points == Rules.UQ) { currentIAHealth -= danioAccion; } else { currentPlayerHealth -= danioAccion; } }
+
+        machine_controller.interactions++;
+        Debug.Log("interacciones: " + machine_controller.interactions);
+        if (player_action.Equals(prediction_ia))
+        {
+            machine_controller.correctPredictions++;
+        }
 
     }
     /// <summary>

@@ -22,6 +22,9 @@ public class FilledUI : MonoBehaviour
     /// </summary>
     private Image image;
 
+    public Text correctPercentageIA;
+    public IA IAController;
+
     /// <summary>
     /// Tipo de jugador del cual se asignará la vida
     /// </summary>
@@ -40,10 +43,15 @@ public class FilledUI : MonoBehaviour
         if (tipo == TypePlayer.IA)
         {
            image.fillAmount = LifeController.instance.getIAHealth() / (float)LifeController.instance.maxIAHealth;
+            if (IAController != null && IAController.correctPredictions > 0)
+                correctPercentageIA.text = ((IAController.correctPredictions * 100 / IAController.interactions)).ToString() + " %";
+            else
+                correctPercentageIA.text = "0 %";
         }
         else
         {
             image.fillAmount = LifeController.instance.getPlayerHealth() / (float)LifeController.instance.maxPlayerHealth;
         }
+       
     }
 }
