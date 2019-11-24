@@ -5,9 +5,17 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controlador de la IA del juego
+/// </summary>
 public class IA : MonoBehaviour
 {
-   
+
+    /// <summary>
+    /// Determina si es random o no
+    /// </summary>
+    public bool random = false;
+
     /// <summary>
     /// Ventana que utilizara para atacar al contrario
     /// </summary>
@@ -16,7 +24,7 @@ public class IA : MonoBehaviour
     /// <summary>
     /// Total de acciones que puede hacer un jugador
     /// </summary>
-    public List<string> totalActions = new List<string>();
+    private List<string> totalActions = new List<string>();
 
     /// <summary>
     /// Posible acciones que puede realizar la IA
@@ -86,9 +94,17 @@ public class IA : MonoBehaviour
     /// </summary>
     public string Guess()
     {
+        string guess;
+
+        if (random)
+        {
+            guess = RandomGuess();
+            realizarAccion(guess);
+            return guess;
+        }
+
         List<string> lastActions = new List<string>();
 
-        string guess;
 
         if (totalActions.Count >= windowSize)
         {

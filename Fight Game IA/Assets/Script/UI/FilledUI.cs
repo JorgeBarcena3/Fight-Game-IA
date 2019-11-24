@@ -36,13 +36,14 @@ public class FilledUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (tipo == TypePlayer.IA)
         {
-           image.fillAmount = LifeController.instance.GetMachineHealt() / 100f;
+           image.fillAmount = LifeController.instance.getIAHealth() / (float)LifeController.instance.maxIAHealth;
         }
         else
         {
-            image.fillAmount = LifeController.instance.GetPlayerHealt() / 100f;
+            image.fillAmount = LifeController.instance.getPlayerHealth() / (float)LifeController.instance.maxPlayerHealth;
         }
     }
 }

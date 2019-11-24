@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
 /// Posibles estados del juego
@@ -19,6 +20,20 @@ public enum GameState
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    /// <summary>
+    /// UI del start
+    /// </summary>
+    public GameObject StartUI;
+
+    /// <summary>
+    /// UI del estado de playing
+    /// </summary>
+    public GameObject PlayingUI;
+
+    /// <summary>
+    /// UI del end el juego
+    /// </summary>
+    public GameObject endUI;
 
     /// <summary>
     /// Instancia del GameManager
@@ -97,7 +112,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void ending()
     {
-        if (Input.anyKeyDown)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -108,9 +123,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void starting()
     {
-        if(Input.anyKeyDown)
+        if(Input.GetKeyUp(KeyCode.Space))
         {
             startGame();
+            StartUI.SetActive(false);
+            PlayingUI.SetActive(true);
         }
     }
 
@@ -133,7 +150,9 @@ public class GameManager : MonoBehaviour
     {
         if(contador <= 0)
         {
-            estadoActual = GameState.end;
+            endUI.SetActive(true);
+            estadoActual = GameState.end;   
+            PlayingUI.SetActive(false);
         }
         else
         {
@@ -145,6 +164,7 @@ public class GameManager : MonoBehaviour
         {
             aux_pulsoDeAcciones = 0;
             LifeController.instance.CheckHealt();
+            checkEndGame();
 
         }
         else
@@ -152,6 +172,32 @@ public class GameManager : MonoBehaviour
             aux_pulsoDeAcciones += Time.deltaTime;
         }
 
+
+    }
+
+    /// <summary>
+    /// Determina si el juego ha acabado o no
+    /// </summary>
+    private void checkEndGame()
+    {
+       if(LifeController.instance.getIAHealth() <= 0 || LifeController.instance.getPlayerHealth() <= 0)
+        {
+            endUI.SetActive(true);
+            PlayingUI.SetActive(false);
+
+            if(LifeController.instance.getIAHealth() <= 0)
+            {
+                endUI.GetComponentInChildren<Text>().text = "Ha ganado el player. Presiona espacio para volver a jugar.";
+            }
+            else
+            {
+                endUI.GetComponentInChildren<Text>().text = "Ha ganado la IA. Presiona espacio para volver a jugar.";
+            }
+
+            estadoActual = GameState.end;
+
+        }
+            
 
     }
 

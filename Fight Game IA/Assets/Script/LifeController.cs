@@ -4,23 +4,47 @@ using UnityEngine;
 
 public class LifeController : MonoBehaviour
 {
-   /// <summary>
-   /// Referencia del jugador
-   /// </summary>
-    public CharacterAnimatorController player_controller;
+    [Header("IA Config")]
+
+    /// <summary>
+    /// Indicador de vida de la IA
+    /// </summary>
+    public int maxIAHealth;
+
     /// <summary>
     /// Referencia de la IA
     /// </summary>
     public IA machine_controller;
 
     /// <summary>
+    /// Vida actual de la IA
+    /// </summary>
+    private int currentIAHealth;
+
+
+    [Header("Player Config")]
+
+    /// <summary>
     /// Indicador de vida del jugador
     /// </summary>
-    private int player_healt;
+    public int maxPlayerHealth;
+
     /// <summary>
-    /// Indicador de vida de la IA
+    /// Referencia del jugador
     /// </summary>
-    private int machine_healt;
+    public CharacterAnimatorController player_controller;
+
+    /// <summary>
+    /// Vida actual del player
+    /// </summary>
+    private int currentPlayerHealth;
+
+    [Header("Daño por accion")]
+
+    /// <summary>
+    /// Daño por accion
+    /// </summary>
+    public int danioAccion;
 
     /// <summary>
     /// Instancia a si mismo
@@ -29,10 +53,9 @@ public class LifeController : MonoBehaviour
 
     void Start()
     {
-
+        currentIAHealth = maxIAHealth;
+        currentPlayerHealth = maxPlayerHealth;
         instance = this;
-        player_healt = 100;
-        machine_healt = 100;
         
     }
 
@@ -52,14 +75,14 @@ public class LifeController : MonoBehaviour
             switch (roles(player_action, machine_action))
             {
                 case 1:
-                    machine_healt -= 10;
+                    currentIAHealth -= danioAccion;
                     break;
                 case 2:
-                    player_healt -= 10;
+                    currentPlayerHealth -= danioAccion;
                     break;
                 case 3:
-                    machine_healt -= 10;
-                    player_healt -= 10;
+                    currentIAHealth -= danioAccion;
+                    currentPlayerHealth -= danioAccion;
                     break;
             }
 
@@ -119,10 +142,10 @@ public class LifeController : MonoBehaviour
     /// Retorna la vida del jugador
     /// </summary>
     /// <returns>vida del jugador en enteros</returns>
-    public int GetPlayerHealt() { return player_healt; }
+    public int getPlayerHealth() { return currentPlayerHealth; }
     /// <summary>
     /// Retorna la vida de la IA
     /// </summary>
     /// <returns>vida de la IA en enteros</returns>
-    public int GetMachineHealt() { return machine_healt; }
+    public int getIAHealth() { return currentIAHealth; }
 }
