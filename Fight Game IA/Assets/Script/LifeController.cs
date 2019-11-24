@@ -2,6 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Indica que acciones ganan a otras
+/// </summary>
+public enum Rules
+{
+    CN = 0,     //<agacharse
+    CW = 0,     //<agacharse
+    CQ = 0,     //<agacharse
+    FN = 0,     //<no hacer nada 
+    UN = 0,     //<saltar
+    FW = 1,     //<ataque w
+    FQ = 2,     //<ataque q
+    UW = 3,     //<saltar y ataque w
+    UQ = 4,     //<saltar y ataque q (este ataque es vencido con ataque w)
+}
 public class LifeController : MonoBehaviour
 {
     [Header("IA Config")]
@@ -50,6 +65,14 @@ public class LifeController : MonoBehaviour
     /// Instancia a si mismo
     /// </summary>
     public static LifeController instance;
+    /// <summary>
+    /// Los puntos que valen la ultima acción del jugador
+    /// </summary>
+    private Rules player_points;
+    /// <summary>
+    /// Los puntos que valen la ultima acción de la ia
+    /// </summary>
+    private Rules ia_points;
 
     void Start()
     {
@@ -60,83 +83,23 @@ public class LifeController : MonoBehaviour
     }
 
     // Update is called once per frame
-   /// <summary>
-   /// Comprueba si alguien ha recibido daño
-   /// </summary>
+    /// <summary>
+    /// Comprueba si alguien ha recibido daño
+    /// </summary>
     public void CheckHealt()
     {
+
         string machine_action = machine_controller.Guess();
         string player_action = player_controller.checkAction();
 
+        player_points = (Rules)System.Enum.Parse(typeof(Rules), player_action);
+        ia_points = (Rules)System.Enum.Parse(typeof(Rules), machine_action);
+
         Debug.Log("AI: " + machine_action + " -- " + player_action + " :PL");
+        //Se comprueba cual de los dos ataque es mas fuerte y si alguien ha hecho 4 y el otro 1 que gane el 1 para cerrar el circulo de acciones
+        if (player_points > ia_points) { if (player_points == Rules.UQ && ia_points == Rules.FW) { currentPlayerHealth -= danioAccion; } else { currentIAHealth -= danioAccion; } }
+        else if (player_points < ia_points) { if (player_points == Rules.FW && ia_points == Rules.UQ) { currentIAHealth -= danioAccion; } else { currentPlayerHealth -= danioAccion; } }
 
-        if (player_action != machine_action)
-        {
-            switch (roles(player_action, machine_action))
-            {
-                case 1:
-                    currentIAHealth -= danioAccion;
-                    break;
-                case 2:
-                    currentPlayerHealth -= danioAccion;
-                    break;
-                case 3:
-                    currentIAHealth -= danioAccion;
-                    currentPlayerHealth -= danioAccion;
-                    break;
-            }
-
-        }
-    }
-    /// <summary>
-    /// Determina quien recibe danyo dependiendo de las reglas definidas
-    /// </summary>
-    /// <param name="player">accion del jugador</param>
-    /// <param name="machine">accion de la ia</param>
-    /// <returns></returns>
-    private int roles(string player , string machine)
-    {
-
-        /**
-         * 0 ->nadie recibe daño
-         * 1 ->Player gana / recibe danyo machine
-         * 2 ->Player pierde/ player recibe danyo
-         * 3 ->Los dos reciben danyo
-         */
-
-
-        /**
-         * player  machine
-         * U     - U      -> puede haber colision
-         * U     - F      -> UW - !FW gana player
-         * U     - C      -> No hay colision
-         * F     - F      -> Pude haber colision
-         * F     - C      -> no hay colision
-         * !N    - N      -> hay colision
-         */
-        //Conque uno de los dos se agachen nadie recibe daño
-        if (player[0] == 'C' || machine[0] == 'C') { return 0; }
-        //En el caso de que esten en el mismo lugar, no agachados recibiran los 2 daño
-        //porque hacen ataques distintos, sinó no estariamos en esta funcion
-        else if (player[0] == machine[0])
-        {
-            if (player[1] != 'N' && machine[1] != 'N') { return 3; }
-            else if (player[1] == 'N') { return 2; }
-            else if (machine[1] == 'N') { return 1; }
-            else { return 3; }
-           
-        }
-        else
-        {
-            if (player == "UW" && machine != "FW") { return 1; }
-            if (player == "UW" && machine == "FW") { return 0; }
-            if (machine == "UW" && player != "FW") { return 2; }
-            if (machine == "UW" && player == "FW") { return 0; }
-
-        }
-        return 0;
-
-       
     }
     /// <summary>
     /// Retorna la vida del jugador
